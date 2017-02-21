@@ -1,18 +1,28 @@
 defmodule ExJsonLogger do
   @moduledoc """
-  Documentation for ExJsonLogger.
   """
+  alias Logger.{Utils}
 
   @doc """
-  Hello world.
+  log formatter replacement. Injected through the :format key
 
-  ## Examples
-
-      iex> ExJsonLogger.hello
-      :world
-
+  config :logger, :console,
+    format: {ExJsonLogger, :format}
   """
-  def hello do
-    :world
+  @spec format(Logger.level, Logger.message, Logger.time, Keyword.t) :: String.t
+  def format(level, msg, timestamp, metadata) do
+    %{
+      level: level,
+      time: format_time(timestamp),
+      msg: (msg |> IO.iodata_to_binary)
+    }
+    |> Map.merge(Enum.into(metadata, %{}))
+    |> Poison.encode!
+    |> Kernel.<>("\n")
+  end
+
+  defp format_time({date, time}) do
+    [Utils.format_date(date), Utils.format_time(time)]
+    |> Enum.join(" ")
   end
 end
