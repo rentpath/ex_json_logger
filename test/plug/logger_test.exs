@@ -2,8 +2,9 @@ defmodule ExJsonLogger.Plug.LoggerTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
-  import ExUnit.CaptureIO
   require Logger
+
+  import TestUtils, only: [capture_log: 1]
 
   @default_metadata [
     :method,
@@ -38,15 +39,6 @@ defmodule ExJsonLogger.Plug.LoggerTest do
     |> put_private(:phoenix_controller, __MODULE__)
     |> put_private(:phoenix_action, :show)
     |> put_private(:phoenix_format, "json")
-  end
-
-  defp capture_log(fun) do
-    data = capture_io(:user, fn ->
-      Process.put(:capture_log, fun.())
-      Logger.flush()
-    end)
-
-    {Process.get(:capture_log), data}
   end
 
   describe "when request is made to phoenix controller" do
