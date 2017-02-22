@@ -17,14 +17,14 @@ defmodule ExJsonLogger.Ecto.Logger do
       [raw_query_time, raw_decode_time, raw_queue_time]
       |> Enum.map(&format_time/1)
 
-    stats = []
+    metadata = []
     |> Keyword.put(:decode_time, decode_time)
     |> Keyword.put(:db_duration, (query_time + decode_time + queue_time))
     |> Keyword.put(:query, query)
     |> Keyword.put(:query_time, query_time)
     |> Keyword.put(:queue_time, queue_time)
 
-    Logger.log(level, fn -> {"", stats} end)
+    Logger.log(level, fn -> {"", metadata} end)
 
     entry
   end

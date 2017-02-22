@@ -29,7 +29,7 @@ defmodule ExJsonLogger.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:excoveralls, "~> 0.6.1", only: :test},
+      {:excoveralls, "~> 0.6.1", only: [:test]},
       {:credo, "~> 0.6.0", only: [:dev, :test]},
       {:plug, "~> 1.0"},
       {:poison, ">= 1.4.0"}

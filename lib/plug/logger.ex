@@ -34,14 +34,16 @@ defmodule ExJsonLogger.Plug.Logger do
       diff = stop_time - start_time
       duration = System.convert_time_unit(diff, :native, :micro_seconds)
 
-      stats = []
+      metadata = []
       |> Keyword.put(:method, conn.method)
       |> Keyword.put(:path, conn.request_path)
       |> Keyword.merge(formatted_phoenix_info(conn))
       |> Keyword.put(:status, conn.status)
       |> Keyword.put(:duration, format_time(duration))
 
-      Logger.log(level, fn -> {"", stats} end)
+      # TODO: params?, headers?
+
+      Logger.log(level, fn -> {"", metadata} end)
 
       conn
     end)
