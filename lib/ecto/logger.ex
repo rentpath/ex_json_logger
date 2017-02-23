@@ -14,16 +14,14 @@ defmodule ExJsonLogger.Ecto.Logger do
 
   Add `ExJsonLogger.Ecto.Logger` to the Repo's configuration under the `:loggers` key.
 
-  ```
-  config :sample, Sample.Repo,
-    adapter: Ecto.Adapters.MySQL,
-    username: "root",
-    password: "",
-    database: "sample_dev",
-    hostname: "localhost",
-    pool_size: 10,
-    loggers: [{ExJsonLogger.Ecto.Logger, :log, []}]
-  ```
+      config :sample, Sample.Repo,
+        adapter: Ecto.Adapters.MySQL,
+        username: "root",
+        password: "",
+        database: "sample_dev",
+        hostname: "localhost",
+        pool_size: 10,
+        loggers: [{ExJsonLogger.Ecto.Logger, :log, []}]
   """
 
   require Logger

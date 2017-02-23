@@ -10,14 +10,13 @@ defmodule ExJsonLogger do
 
   ## Usage
 
-  ```
-  config :logger, :console,
-    format: {ExJsonLogger, :format},
-    metadata: [
-      :request_id,
-      :additional_key
-    ]
-  ```
+      config :logger, :console,
+        format: {ExJsonLogger, :format},
+        metadata: [
+          :request_id,
+          :additional_key
+        ]
+
   *Currently tested with the `:console` logger backend.*
 
   """

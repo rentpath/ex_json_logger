@@ -1,6 +1,7 @@
 # ExJsonLogger
 
-**TODO: Add description**
+A drop-in replacement for `:console`'s formatter. ExJsonLogger takes standard `Logger` calls and JSON encodes them.
+Ecto and Plug loggers are also included.
 
 ## Installation
 
@@ -17,3 +18,23 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/ex_json_logger](https://hexdocs.pm/ex_json_logger).
 
+ * Logger - *For more documentation reference `ExJsonLogger`*
+ * Plug - *For more documentation reference `ExJsonLogger.Plug.Logger`*
+ * Ecto - *For more documentation reference `ExJsonLogger.Ecto.Logger`*
+
+
+## Running the tests
+Test include
+- Linter via [Credo](https://hex.pm/packages/credo)
+- Coverage via [Excoveralls](https://hex.pm/packages/excoveralls)
+- run tests: `script/test`
+- run tests with coverage: `script/test --coverage`
+
+## Contributing
+-  Follow the instructions above to install `elixir` and get the repo running.
+-  If you modify code, add a corresponding test and documentation(if applicable).
+-  Create a Pull Request (please squash to one concise commit).
+-  Thanks!
+
+## License
+[MIT](https://github.com/rentpath/ex_json_logger/blob/master/LICENSE)

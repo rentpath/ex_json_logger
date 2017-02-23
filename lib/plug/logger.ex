@@ -15,12 +15,10 @@ defmodule ExJsonLogger.Plug.Logger do
 
   ## Usage
 
-  To use with a Phoenix application, `replace Plug.Logger` in the projects endpoint.ex file with `ExJsonLogger.Plug.Logger`:
+  To use with a Phoenix application, replace `plug Plug.Logger` in the projects endpoint.ex file with `ExJsonLogger.Plug.Logger`:
 
-  ```
-  # plug Plug.Logger
-  plug ExJsonLogger.Plug.Logger
-  ```
+      # plug Plug.Logger
+      plug ExJsonLogger.Plug.Logger
 
   ## Options
   * `:log` - The log level at which this plug should log its request info.
