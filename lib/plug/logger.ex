@@ -1,6 +1,17 @@
 defmodule ExJsonLogger.Plug.Logger do
   @moduledoc """
-  A plug for logging request information
+  A plug for logging request information through metadata.
+
+  Logger Metadata avaliable:
+   * method - request method
+   * path - request path
+   * status - request status (integer)
+   * duration - time in milliseconds from connection to response (float)
+   * format - (phoenix specific)
+   * controller - (phoenix specific)
+   * action - (phoenix specific)
+
+  Metadata is filtered by default so keys will need to be whitelisted.
 
   ## Usage
 
@@ -22,6 +33,7 @@ defmodule ExJsonLogger.Plug.Logger do
 
   @spec init(Keyword.t) :: Logger.level
   def init(opts) do
+    # TODO: needs testing
     Keyword.get(opts, :log, :info)
   end
 
@@ -37,9 +49,9 @@ defmodule ExJsonLogger.Plug.Logger do
       metadata = []
       |> Keyword.put(:method, conn.method)
       |> Keyword.put(:path, conn.request_path)
-      |> Keyword.merge(formatted_phoenix_info(conn))
       |> Keyword.put(:status, conn.status)
       |> Keyword.put(:duration, format_time(duration))
+      |> Keyword.merge(formatted_phoenix_info(conn))
 
       # TODO: params?, headers?
 

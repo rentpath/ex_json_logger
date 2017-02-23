@@ -11,9 +11,9 @@ defmodule ExJsonLogger.Ecto.LoggerTest do
     :queue_time
   ]
 
+  @tag :skip
   describe "log/1" do
     test "" do
-      assert 1 + 1 == 2
     end
   end
 

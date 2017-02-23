@@ -12,4 +12,5 @@ defmodule TestUtils do
   end
 end
 
+ExUnit.configure(exclude: [skip: true])
 ExUnit.start()
