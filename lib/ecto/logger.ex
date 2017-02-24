@@ -2,7 +2,7 @@ defmodule ExJsonLogger.Ecto.Logger do
   @moduledoc """
   An Ecto Logger replacement which captures and logs `Ecto.LogEntry` attributes through metadata.
 
-  Logger Metadata avaliable:
+  Logger Metadata available:
    * query - the query as string;
    * query_time - the time spent executing the query in milliseconds;
    * decode_time - the time spent decoding the result in milliseconds;

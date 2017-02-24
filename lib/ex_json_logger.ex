@@ -6,7 +6,7 @@ defmodule ExJsonLogger do
 
   Use Logger's metadata to add additional data to the log output.
   This can be done through `Logger.metadata/1` or by passing Keywords to standard Logger calls in the optional second parameter.
-  Logger filter metadata so any additional keys will need to be whitelisted in the backend's configuration.
+  Logger filters metadata so any additional keys will need to be whitelisted in the backend's configuration.
 
   ## Usage
 
@@ -20,7 +20,7 @@ defmodule ExJsonLogger do
   *Currently tested with the `:console` logger backend.*
 
   """
-  alias Logger.{Utils}
+  import Logger.Utils, only: [format_date: 1, format_time: 1]
 
   @doc """
   Function referenced in the `:format` config.
@@ -29,7 +29,7 @@ defmodule ExJsonLogger do
   def format(level, msg, timestamp, metadata) do
     %{
       level: level,
-      time: format_time(timestamp),
+      time: format_timestamp(timestamp),
       msg: (msg |> IO.iodata_to_binary)
     }
     |> Map.merge(Enum.into(metadata, %{}))
@@ -37,8 +37,7 @@ defmodule ExJsonLogger do
     |> Kernel.<>("\n")
   end
 
-  defp format_time({date, time}) do
-    [Utils.format_date(date), Utils.format_time(time)]
-    |> Enum.join(" ")
+  defp format_timestamp({date, time}) do
+    "#{format_date(date)} #{format_time(time)}"
   end
 end

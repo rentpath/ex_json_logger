@@ -22,9 +22,11 @@ defmodule ExJsonLoggerTest do
       end)
 
       {:ok, decoded_log} = Poison.decode(message)
-      assert decoded_log["msg"] == "this is a message"
-      assert decoded_log["level"] == "debug"
-      assert decoded_log["user_id"] == 11
+      assert %{
+        "msg" => "this is a message",
+        "level" => "debug",
+        "user_id" => 11
+      } = decoded_log
     end
   end
 end
