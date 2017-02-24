@@ -41,7 +41,6 @@ defmodule ExJsonLogger.Ecto.LoggerTest do
       assert message =~ "db_duration=3.84 "
       assert message =~ "query_time=3.638 "
       assert message =~ "queue_time=0.123 "
-      # TODO: is this valid?
       assert message =~ "query=SELECT n0.`id`, n0.`title`, n0.`text`, n0.`created_at`, n0.`inserted_at`, n0.`updated_at` FROM `notes` AS n0"
     end
   end

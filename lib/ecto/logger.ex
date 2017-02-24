@@ -26,8 +26,6 @@ defmodule ExJsonLogger.Ecto.Logger do
 
   require Logger
 
-  #TODO: Do I need a log/1 for `compile_time_purge_level`?
-
   @spec log(Ecto.LogEntry.t, Logger.level) :: Ecto.LogEntry.t
   def log(entry, level \\ :debug) do
     %{
@@ -42,8 +40,6 @@ defmodule ExJsonLogger.Ecto.Logger do
       [raw_query_time, raw_decode_time, raw_queue_time]
       |> Enum.map(&to_ms/1)
 
-    # TODO: do we care about summing here.
-    # If we wanted this info we could add up the values else where
     duration = times
     |> Enum.sum
     |> Float.round(3)
@@ -60,8 +56,6 @@ defmodule ExJsonLogger.Ecto.Logger do
     entry
   end
 
-  # TODO: decode_time and queue_time can be nil.
-  # Is it fine to change that to 0.0?
   defp to_ms(nil), do: 0.0
   defp to_ms(time) do
     time

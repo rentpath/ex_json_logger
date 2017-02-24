@@ -31,7 +31,6 @@ defmodule ExJsonLogger.Plug.Logger do
 
   @spec init(Keyword.t) :: Logger.level
   def init(opts) do
-    # TODO: needs testing
     Keyword.get(opts, :log, :info)
   end
 
@@ -50,8 +49,6 @@ defmodule ExJsonLogger.Plug.Logger do
       |> Keyword.put(:status, conn.status)
       |> Keyword.put(:duration, format_time(duration))
       |> Keyword.merge(formatted_phoenix_info(conn))
-
-      # TODO: params?, headers?
 
       Logger.log(level, fn -> {"", metadata} end)
 
