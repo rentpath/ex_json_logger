@@ -25,14 +25,15 @@ defmodule ExJsonLogger do
   @doc """
   Function referenced in the `:format` config.
   """
-  @spec format(Logger.level, Logger.message, Logger.time, Keyword.t) :: String.t
+  @spec format(Logger.level, Logger.message,
+               Logger.Formatter.time, Keyword.t) :: String.t
   def format(level, msg, timestamp, metadata) do
     %{
       level: level,
-      time: format_timestamp(timestamp),
-      msg: (msg |> IO.iodata_to_binary)
+      time:  format_timestamp(timestamp),
+      msg:   IO.iodata_to_binary(msg)
     }
-    |> Map.merge(Enum.into(metadata, %{}))
+    |> Map.merge(Map.new(metadata))
     |> Poison.encode!
     |> Kernel.<>("\n")
   end
