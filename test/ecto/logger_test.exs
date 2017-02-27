@@ -11,12 +11,6 @@ defmodule ExJsonLogger.Ecto.LoggerTest do
     :queue_time
   ]
 
-  @tag :skip
-  describe "log/1" do
-    test "" do
-    end
-  end
-
   describe "log/2" do
     test "entry values are formatted and put into metadata" do
       Logger.configure_backend(:console, [

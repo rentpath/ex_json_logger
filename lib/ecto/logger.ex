@@ -57,9 +57,9 @@ defmodule ExJsonLogger.Ecto.Logger do
   end
 
   defp to_ms(nil), do: 0.0
-  defp to_ms(time) do
+  defp to_ms(time) when is_integer(time) do
     time
-    |> System.convert_time_unit(:native, :micro_seconds)
+    |> System.convert_time_unit(:native, :microsecond)
     |> Kernel./(1000) # divide to keep decimal precision
     |> Float.round(3)
   end

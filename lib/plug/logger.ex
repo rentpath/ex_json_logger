@@ -41,13 +41,13 @@ defmodule ExJsonLogger.Plug.Logger do
     Conn.register_before_send(conn, fn conn ->
       stop_time = current_time()
       diff = stop_time - start_time
-      duration = System.convert_time_unit(diff, :native, :micro_seconds)
+      duration = System.convert_time_unit(diff, :native, :microsecond) / 1000
 
       metadata = []
       |> Keyword.put(:method, conn.method)
       |> Keyword.put(:path, conn.request_path)
       |> Keyword.put(:status, conn.status)
-      |> Keyword.put(:duration, format_time(duration))
+      |> Keyword.put(:duration, duration)
       |> Keyword.merge(formatted_phoenix_info(conn))
 
       Logger.log(level, fn -> {"", metadata} end)
@@ -68,8 +68,6 @@ defmodule ExJsonLogger.Plug.Logger do
     ]
   end
   defp formatted_phoenix_info(_), do: []
-
-  defp format_time(time), do: (time / 1000)
 
   defp current_time, do: System.monotonic_time()
 end

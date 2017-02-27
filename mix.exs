@@ -9,12 +9,17 @@ defmodule ExJsonLogger.Mixfile do
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
       package: package(),
+      aliases: aliases(),
       deps: deps(),
       test_coverage: [
         tool: ExCoveralls
       ],
       preferred_cli_env: [
         coveralls: :test
+      ],
+      dialyzer: [
+        plt_add_deps: :transitive,
+        ignore_warnings: ".dialyzerignore"
       ],
 
       # Docs
@@ -23,7 +28,7 @@ defmodule ExJsonLogger.Mixfile do
       docs: [
        # main: "MyApp", # The main page in the docs
        # logo: "path/to/logo.png",
-       extras: ["README.md"]
+        extras: ["README.md"]
       ]
     ]
 
@@ -49,6 +54,7 @@ defmodule ExJsonLogger.Mixfile do
   defp deps do
     [
       {:ex_doc, "~> 0.14", only: [:dev], runtime: false},
+      {:ecto, "~> 2.1", only: [:dev], optional: true},
       {:excoveralls, "~> 0.6.1", only: [:test]},
       {:credo, "~> 0.6.0", only: [:dev, :test]},
       {:dialyxir, "~>0.5", only: [:dev], runtime: false},
@@ -65,5 +71,9 @@ defmodule ExJsonLogger.Mixfile do
       links: %{"GitHub" => "https://github.com/rentpath/ex_json_logger"},
       licenses: ["The MIT License"]
     ]
+  end
+
+  defp aliases do
+    [dialyzer: "dialyzer --halt-exit-status"]
   end
 end
