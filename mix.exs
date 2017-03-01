@@ -11,6 +11,7 @@ defmodule ExJsonLogger.Mixfile do
       package: package(),
       aliases: aliases(),
       deps: deps(),
+      description: description(),
       test_coverage: [
         tool: ExCoveralls
       ],
@@ -42,15 +43,6 @@ defmodule ExJsonLogger.Mixfile do
     [extra_applications: [:logger]]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:my_dep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:my_dep, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
   defp deps do
     [
       {:ex_doc, "~> 0.14", only: [:dev], runtime: false},
@@ -63,10 +55,16 @@ defmodule ExJsonLogger.Mixfile do
     ]
   end
 
+  defp description do
+    """
+    JSON formatter for Loggers console backend, Plug and Ecto formatters included.
+    """
+  end
+
   defp package do
     [
       name: :ex_json_logger,
-      files: ["lib", "priv", "mix.exs", "README*", "LICENSE*"],
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["devadmin@rentpath.com", "Eric Toulson <ebtoulson@gmail.com>"],
       links: %{"GitHub" => "https://github.com/rentpath/ex_json_logger"},
       licenses: ["The MIT License"]
