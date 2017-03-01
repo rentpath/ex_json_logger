@@ -1,0 +1,10 @@
+#!/bin/bash
+set -e
+
+cd "$(dirname "$0")/.."
+
+mix credo --strict
+mix test
+if [[ -n "$1" && $1 == "--coverage" ]]; then
+  MIX_ENV=test mix coveralls
+fi
