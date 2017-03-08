@@ -4,7 +4,7 @@ defmodule ExJsonLogger.Mixfile do
   def project do
     [
       app: :ex_json_logger,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.4",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -26,11 +26,7 @@ defmodule ExJsonLogger.Mixfile do
       # Docs
       name: "ex_json_logger",
       source_url: "https://github.com/rentpath/ex_json_logger",
-      docs: [
-       # main: "MyApp", # The main page in the docs
-       # logo: "path/to/logo.png",
-        extras: ["README.md"]
-      ]
+      docs: docs()
     ]
 
   end
@@ -68,6 +64,15 @@ defmodule ExJsonLogger.Mixfile do
       maintainers: ["devadmin@rentpath.com", "Eric Toulson <ebtoulson@gmail.com>"],
       links: %{"GitHub" => "https://github.com/rentpath/ex_json_logger"},
       licenses: ["The MIT License"]
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      extras: [
+        "README.md"
+      ]
     ]
   end
 
