@@ -4,6 +4,7 @@ defmodule ExJsonLogger.Ecto.Logger do
 
   Logger Metadata available:
    * query - the query as string;
+   * query_params - the query parameters as string;
    * query_time - the time spent executing the query in milliseconds;
    * decode_time - the time spent decoding the result in milliseconds;
    * queue_time - the time spent to check the connection out in milliseconds;
@@ -32,7 +33,8 @@ defmodule ExJsonLogger.Ecto.Logger do
       query_time:  raw_query_time,
       decode_time: raw_decode_time,
       queue_time:  raw_queue_time,
-      query:       query
+      query:       query,
+      params:      query_params
     } = entry
 
     times =
@@ -50,6 +52,7 @@ defmodule ExJsonLogger.Ecto.Logger do
     |> Keyword.put(:query_time, query_time)
     |> Keyword.put(:queue_time, queue_time)
     |> Keyword.put(:query, query)
+    |> Keyword.put(:query_params, inspect(query_params, charlists: false))
 
     Logger.log(level, fn -> {"", metadata} end)
 
