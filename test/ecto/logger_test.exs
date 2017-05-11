@@ -8,7 +8,8 @@ defmodule ExJsonLogger.Ecto.LoggerTest do
     :db_duration,
     :query,
     :query_time,
-    :queue_time
+    :queue_time,
+    :query_params
   ]
 
   describe "log/2" do
@@ -24,7 +25,8 @@ defmodule ExJsonLogger.Ecto.LoggerTest do
         query_time: 3_638_533,
         decode_time:   79_113,
         queue_time:   123_169,
-        query: "SELECT n0.`id`, n0.`title`, n0.`text`, n0.`created_at`, n0.`inserted_at`, n0.`updated_at` FROM `notes` AS n0"
+        query: "INSERT INTO `x` (`id`, `label`, `updated_at`) VALUES (?,?,?)",
+        params: [1, "20170504-373-cb4150f", {{2017, 5, 10}, {21, 34, 53, 998254}}, {{2017, 5, 10}, {21, 34, 53, 998264}}]
       }
 
       {_, message} = capture_log(fn ->
@@ -35,7 +37,8 @@ defmodule ExJsonLogger.Ecto.LoggerTest do
       assert message =~ "db_duration=3.84 "
       assert message =~ "query_time=3.638 "
       assert message =~ "queue_time=0.123 "
-      assert message =~ "query=SELECT n0.`id`, n0.`title`, n0.`text`, n0.`created_at`, n0.`inserted_at`, n0.`updated_at` FROM `notes` AS n0"
+      assert message =~ "query=INSERT INTO `x` (`id`, `label`, `updated_at`) VALUES (?,?,?)"
+      assert message =~ "query_params=[1, \"20170504-373-cb4150f\", {{2017, 5, 10}, {21, 34, 53, 998254}}, {{2017, 5, 10}, {21, 34, 53, 998264}}]"
     end
   end
 end
