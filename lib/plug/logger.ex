@@ -23,19 +23,24 @@ defmodule ExJsonLogger.Plug.Logger do
   ## Options
   * `:log` - The log level at which this plug should log its request info.
   Default is `:info`.
+  * `:additional_metadata` - A function that enriches the logger metadata.
+  Default is a no-op function.
   """
 
   require Logger
   alias Plug.Conn
   @behaviour Plug
 
-  @spec init(Keyword.t) :: Logger.level
+  @type opts :: binary | tuple | atom | integer | float | [opts] | %{opts => opts}
+  @spec init(Keyword.t) :: opts
   def init(opts) do
-    Keyword.get(opts, :log, :info)
+    opts
   end
 
-  @spec call(Conn.t, Logger.level) :: Conn.t
-  def call(conn, level) do
+  @spec call(Conn.t, opts) :: Conn.t
+  def call(conn, opts) do
+    level = Keyword.get(opts, :log, :info)
+    additional_metadata = Keyword.get(opts, :additional_metadata, &default_additional_metadata/1)
     start_time = current_time()
 
     Conn.register_before_send(conn, fn conn ->
@@ -49,12 +54,16 @@ defmodule ExJsonLogger.Plug.Logger do
       |> Keyword.put(:status, conn.status)
       |> Keyword.put(:duration, duration)
       |> Keyword.merge(formatted_phoenix_info(conn))
+      |> Keyword.merge(additional_metadata.(conn))
 
       Logger.log(level, fn -> {"", metadata} end)
 
       conn
     end)
   end
+
+  @spec call(Conn.t, Keyword.t) :: Keyword.t
+  defp default_additional_metadata(_conn), do: []
 
   defp formatted_phoenix_info(%{private: %{
                                   phoenix_format: format,
