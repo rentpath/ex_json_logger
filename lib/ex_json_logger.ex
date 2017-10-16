@@ -28,12 +28,15 @@ defmodule ExJsonLogger do
   @spec format(Logger.level, Logger.message,
                Logger.Formatter.time, Keyword.t) :: String.t
   def format(level, msg, timestamp, metadata) do
-    %{
+    logger_info = %{
       level: level,
       time:  format_timestamp(timestamp),
       msg:   IO.iodata_to_binary(msg)
     }
-    |> Map.merge(Map.new(metadata))
+
+    metadata
+    |> Map.new(fn{k, v} -> {k, format_metadata(v)} end)
+    |> Map.merge(logger_info)
     |> Poison.encode!
     |> Kernel.<>("\n")
   end
@@ -41,4 +44,8 @@ defmodule ExJsonLogger do
   defp format_timestamp({date, time}) do
     "#{format_date(date)} #{format_time(time)}"
   end
+
+  defp format_metadata(pid) when is_pid(pid), do: inspect(pid)
+  defp format_metadata(ref) when is_reference(ref), do: inspect(ref)
+  defp format_metadata(other), do: other
 end
