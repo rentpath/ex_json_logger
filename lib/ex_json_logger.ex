@@ -20,24 +20,24 @@ defmodule ExJsonLogger do
   *Currently tested with the `:console` logger backend.*
 
   """
-  import Logger.Utils, only: [format_date: 1, format_time: 1]
+  import Logger.Formatter, only: [format_date: 1, format_time: 1]
 
   @doc """
   Function referenced in the `:format` config.
   """
-  @spec format(Logger.level, Logger.message,
-               Logger.Formatter.time, Keyword.t) :: String.t
+  @spec format(Logger.level(), Logger.message(),
+               Logger.Formatter.time(), Keyword.t()) :: String.t()
   def format(level, msg, timestamp, metadata) do
     logger_info = %{
       level: level,
-      time:  format_timestamp(timestamp),
-      msg:   IO.iodata_to_binary(msg)
+      time: format_timestamp(timestamp),
+      msg: IO.iodata_to_binary(msg)
     }
 
     metadata
-    |> Map.new(fn{k, v} -> {k, format_metadata(v)} end)
+    |> Map.new(fn {k, v} -> {k, format_metadata(v)} end)
     |> Map.merge(logger_info)
-    |> Poison.encode!
+    |> Poison.encode!()
     |> Kernel.<>("\n")
   end
 
