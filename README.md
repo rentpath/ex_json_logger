@@ -12,7 +12,7 @@ by adding `ex_json_logger` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:ex_json_logger, "~> 0.1.3"}]
+  [{:ex_json_logger, "~> 1.0.0"}]
 end
 ```
 

@@ -29,12 +29,12 @@ defmodule ExJsonLogger.Plug.Logger do
   alias Plug.Conn
   @behaviour Plug
 
-  @spec init(Keyword.t) :: Logger.level
+  @spec init(Keyword.t()) :: Logger.level()
   def init(opts) do
     Keyword.get(opts, :log, :info)
   end
 
-  @spec call(Conn.t, Logger.level) :: Conn.t
+  @spec call(Conn.t(), Logger.level()) :: Conn.t()
   def call(conn, level) do
     start_time = current_time()
 
@@ -43,12 +43,13 @@ defmodule ExJsonLogger.Plug.Logger do
       diff = stop_time - start_time
       duration = System.convert_time_unit(diff, :native, :microsecond) / 1000
 
-      metadata = []
-      |> Keyword.put(:method, conn.method)
-      |> Keyword.put(:path, conn.request_path)
-      |> Keyword.put(:status, conn.status)
-      |> Keyword.put(:duration, duration)
-      |> Keyword.merge(formatted_phoenix_info(conn))
+      metadata =
+        []
+        |> Keyword.put(:method, conn.method)
+        |> Keyword.put(:path, conn.request_path)
+        |> Keyword.put(:status, conn.status)
+        |> Keyword.put(:duration, duration)
+        |> Keyword.merge(formatted_phoenix_info(conn))
 
       Logger.log(level, fn -> {"", metadata} end)
 
@@ -56,17 +57,20 @@ defmodule ExJsonLogger.Plug.Logger do
     end)
   end
 
-  defp formatted_phoenix_info(%{private: %{
-                                  phoenix_format: format,
-                                  phoenix_controller: controller,
-                                  phoenix_action: action
-                                }}) do
+  defp formatted_phoenix_info(%{
+         private: %{
+           phoenix_format: format,
+           phoenix_controller: controller,
+           phoenix_action: action
+         }
+       }) do
     [
       {:format, format},
       {:controller, controller |> inspect},
-      {:action, action |> Atom.to_string}
+      {:action, action |> Atom.to_string()}
     ]
   end
+
   defp formatted_phoenix_info(_), do: []
 
   defp current_time, do: System.monotonic_time()

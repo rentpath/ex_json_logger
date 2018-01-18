@@ -27,14 +27,14 @@ defmodule ExJsonLogger.Ecto.Logger do
 
   require Logger
 
-  @spec log(Ecto.LogEntry.t, Logger.level) :: Ecto.LogEntry.t
+  @spec log(Ecto.LogEntry.t(), Logger.level()) :: Ecto.LogEntry.t()
   def log(entry, level \\ :debug) do
     %{
-      query_time:  raw_query_time,
+      query_time: raw_query_time,
       decode_time: raw_decode_time,
-      queue_time:  raw_queue_time,
-      query:       query,
-      params:      query_params
+      queue_time: raw_queue_time,
+      query: query,
+      params: query_params
     } = entry
 
     times =
@@ -42,17 +42,19 @@ defmodule ExJsonLogger.Ecto.Logger do
       [raw_query_time, raw_decode_time, raw_queue_time]
       |> Enum.map(&to_ms/1)
 
-    duration = times
-    |> Enum.sum
-    |> Float.round(3)
+    duration =
+      times
+      |> Enum.sum()
+      |> Float.round(3)
 
-    metadata = []
-    |> Keyword.put(:db_duration, duration)
-    |> Keyword.put(:decode_time, decode_time)
-    |> Keyword.put(:query_time, query_time)
-    |> Keyword.put(:queue_time, queue_time)
-    |> Keyword.put(:query, query)
-    |> Keyword.put(:query_params, inspect(query_params, charlists: false))
+    metadata =
+      []
+      |> Keyword.put(:db_duration, duration)
+      |> Keyword.put(:decode_time, decode_time)
+      |> Keyword.put(:query_time, query_time)
+      |> Keyword.put(:queue_time, queue_time)
+      |> Keyword.put(:query, query)
+      |> Keyword.put(:query_params, inspect(query_params, charlists: false))
 
     Logger.log(level, fn -> {"", metadata} end)
 
@@ -60,10 +62,12 @@ defmodule ExJsonLogger.Ecto.Logger do
   end
 
   defp to_ms(nil), do: 0.0
+
   defp to_ms(time) when is_integer(time) do
+    # divide to keep decimal precision
     time
     |> System.convert_time_unit(:native, :microsecond)
-    |> Kernel./(1000) # divide to keep decimal precision
+    |> Kernel./(1000)
     |> Float.round(3)
   end
 end
