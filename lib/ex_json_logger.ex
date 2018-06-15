@@ -34,9 +34,16 @@ defmodule ExJsonLogger do
       msg: IO.iodata_to_binary(msg)
     }
 
+    transformer = Application.get_env(
+      :ex_json_logger,
+      :transformer,
+      ExJsonLogger.Transformer.Identity
+    )
+
     metadata
     |> Map.new(fn {k, v} -> {k, format_metadata(v)} end)
     |> Map.merge(logger_info)
+    |> transformer.transform()
     |> Poison.encode!()
     |> Kernel.<>("\n")
   end
