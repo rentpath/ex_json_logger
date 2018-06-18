@@ -7,6 +7,8 @@ defmodule ExJsonLogger.Plug.LoggerTest do
   import TestUtils, only: [capture_log: 1]
 
   @default_metadata [
+    :req_headers,
+    :resp_headers,
     :method,
     :path,
     :status,

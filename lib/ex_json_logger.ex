@@ -40,12 +40,19 @@ defmodule ExJsonLogger do
       ExJsonLogger.Transformer.Identity
     )
 
+  IO.inspect metadata, label: "metadata old school"
+
     metadata
     |> Map.new(fn {k, v} -> {k, format_metadata(v)} end)
+    |> IO.inspect
     |> Map.merge(logger_info)
+    |> IO.inspect
     |> transformer.transform()
+    |> IO.inspect
     |> Poison.encode!()
+    |> IO.inspect
     |> Kernel.<>("\n")
+    |> IO.inspect
   end
 
   defp format_timestamp({date, time}) do

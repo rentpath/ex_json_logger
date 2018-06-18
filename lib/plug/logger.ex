@@ -5,7 +5,7 @@ defmodule ExJsonLogger.Plug.Logger do
   Logger Metadata avaliable:
    * req_headers - headers in the request
    * resp_headers - headers in the response
-   * query_params - request query parameters as a string
+   * query_string - request query parameters as a string
    * method - request method
    * path - request path
    * status - request status (integer)
@@ -48,19 +48,28 @@ defmodule ExJsonLogger.Plug.Logger do
 
       metadata =
         []
-        |> Keyword.put(:req_headers, conn.req_headers)
-        |> Keyword.put(:resp_headers, conn.resp_headers)
-        |> Keyword.put(:query_params, conn.query_string)
+        |> Keyword.put(:req_headers, formatted_headers(conn.req_headers))
+        |> Keyword.put(:resp_headers, formatted_headers(conn.resp_headers))
+        |> Keyword.put(:query_string, conn.query_string)
         |> Keyword.put(:method, conn.method)
         |> Keyword.put(:path, conn.request_path)
         |> Keyword.put(:status, conn.status)
         |> Keyword.put(:duration, duration)
         |> Keyword.merge(formatted_phoenix_info(conn))
 
+
       Logger.log(level, fn -> {"", metadata} end)
 
       conn
     end)
+  end
+
+  defp formatted_headers(headers) do
+    if Enum.empty?(headers) do
+     %{}
+    else
+      Enum.into(headers, %{})
+    end
   end
 
   defp formatted_phoenix_info(%{
