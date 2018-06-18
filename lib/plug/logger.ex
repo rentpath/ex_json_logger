@@ -3,6 +3,9 @@ defmodule ExJsonLogger.Plug.Logger do
   A plug for logging request information through metadata.
 
   Logger Metadata avaliable:
+   * req_headers - headers in the request
+   * resp_headers - headers in the response
+   * query_params - request query parameters as a string
    * method - request method
    * path - request path
    * status - request status (integer)
@@ -45,6 +48,9 @@ defmodule ExJsonLogger.Plug.Logger do
 
       metadata =
         []
+        |> Keyword.put(:req_headers, conn.req_headers)
+        |> Keyword.put(:resp_headers, conn.resp_headers)
+        |> Keyword.put(:query_params, conn.query_string)
         |> Keyword.put(:method, conn.method)
         |> Keyword.put(:path, conn.request_path)
         |> Keyword.put(:status, conn.status)
