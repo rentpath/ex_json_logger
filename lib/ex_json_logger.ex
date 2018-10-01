@@ -37,6 +37,18 @@ defmodule ExJsonLogger do
     metadata
     |> Map.new(fn {k, v} -> {k, format_metadata(v)} end)
     |> Map.merge(logger_info)
+    |> encode()
+  rescue
+    _ ->
+      encode(%{
+        level: :error,
+        time: format_timestamp(timestamp),
+        msg: "Could not format: #{inspect({level, msg, metadata})}"
+      })
+  end
+
+  defp encode(log_event) do
+    log_event
     |> Poison.encode!()
     |> Kernel.<>("\n")
   end

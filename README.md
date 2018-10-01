@@ -16,6 +16,21 @@ def deps do
 end
 ```
 
+```elixir
+config :logger, :console,
+  format: {ExJsonLogger, :format},
+  metadata: [
+    :action,
+    :controller,
+    :duration,
+    :format,
+    :method,
+    :path,
+    :request_id,
+    :status
+  ]
+```
+
 For additional configuration and metadata option refer to `moduledocs`
 
 ## Documentation

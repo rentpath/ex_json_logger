@@ -2,9 +2,9 @@ defmodule ExJsonLogger.Plug.LoggerTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
-  require Logger
-
   import TestUtils, only: [capture_log: 1]
+
+  require Logger
 
   @default_metadata [
     :method,
@@ -55,9 +55,12 @@ defmodule ExJsonLogger.Plug.LoggerTest do
         colors: [enabled: false]
       )
 
-      {_conn, message} =
+      message =
         capture_log(fn ->
-          conn(:get, "/") |> put_phoenix_privates |> MyApp.call([])
+          :get
+          |> conn("/")
+          |> put_phoenix_privates
+          |> MyApp.call([])
         end)
 
       assert message =~ "method=GET"
@@ -80,9 +83,11 @@ defmodule ExJsonLogger.Plug.LoggerTest do
         colors: [enabled: false]
       )
 
-      {_conn, message} =
+      message =
         capture_log(fn ->
-          conn(:get, "/") |> MyApp.call([])
+          :get
+          |> conn("/")
+          |> MyApp.call([])
         end)
 
       assert message =~ "method=GET"
@@ -105,9 +110,11 @@ defmodule ExJsonLogger.Plug.LoggerTest do
         colors: [enabled: false]
       )
 
-      {_conn, message} =
+      message =
         capture_log(fn ->
-          conn(:get, "/") |> MyApp.call([])
+          :get
+          |> conn("/")
+          |> MyApp.call([])
         end)
 
       assert message == ""

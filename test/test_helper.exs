@@ -2,14 +2,12 @@ defmodule TestUtils do
   import ExUnit.CaptureIO
   require Logger
 
+  @spec capture_log(fun()) :: String.t()
   def capture_log(fun) do
-    data =
-      capture_io(:user, fn ->
-        Process.put(:capture_log, fun.())
-        Logger.flush()
-      end)
-
-    {Process.get(:capture_log), data}
+    capture_io(:user, fn ->
+      Process.put(:capture_log, fun.())
+      Logger.flush()
+    end)
   end
 end
 
