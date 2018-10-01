@@ -39,8 +39,7 @@ defmodule ExJsonLogger.Ecto.Logger do
 
     times =
       [query_time, decode_time, queue_time] =
-      [raw_query_time, raw_decode_time, raw_queue_time]
-      |> Enum.map(&to_ms/1)
+        Enum.map([raw_query_time, raw_decode_time, raw_queue_time], &to_ms/1)
 
     duration =
       times

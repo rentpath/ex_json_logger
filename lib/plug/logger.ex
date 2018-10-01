@@ -66,8 +66,8 @@ defmodule ExJsonLogger.Plug.Logger do
        }) do
     [
       {:format, format},
-      {:controller, controller |> inspect},
-      {:action, action |> Atom.to_string()}
+      {:controller, inspect(controller)},
+      {:action, Atom.to_string(action)}
     ]
   end
 

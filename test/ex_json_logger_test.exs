@@ -1,8 +1,9 @@
 defmodule ExJsonLoggerTest do
   use ExUnit.Case
-  require Logger
 
   import TestUtils, only: [capture_log: 1]
+
+  require Logger
 
   doctest ExJsonLogger
 
@@ -20,7 +21,7 @@ defmodule ExJsonLoggerTest do
       Logger.configure_backend(:console, metadata: [:user_id])
       Logger.metadata(user_id: 11)
 
-      {_, message} =
+      message =
         capture_log(fn ->
           Logger.debug("this is a message")
         end)
@@ -28,10 +29,10 @@ defmodule ExJsonLoggerTest do
       {:ok, decoded_log} = Poison.decode(message)
 
       assert %{
-               "msg" => "this is a message",
-               "level" => "debug",
-               "user_id" => 11
-             } = decoded_log
+        "msg" => "this is a message",
+        "level" => "debug",
+        "user_id" => 11
+      } = decoded_log
     end
   end
 
@@ -45,7 +46,7 @@ defmodule ExJsonLoggerTest do
 
     Logger.metadata(pid: pid, ref: ref)
 
-    {_, message} =
+    message =
       capture_log(fn ->
         Logger.info("this is a message")
       end)
@@ -53,10 +54,10 @@ defmodule ExJsonLoggerTest do
     {:ok, decoded_log} = Poison.decode(message)
 
     assert %{
-             "msg" => "this is a message",
-             "level" => "info",
-             "pid" => ^expected_pid,
-             "ref" => ^expected_ref
-           } = decoded_log
+      "msg" => "this is a message",
+      "level" => "info",
+      "pid" => ^expected_pid,
+      "ref" => ^expected_ref
+    } = decoded_log
   end
 end

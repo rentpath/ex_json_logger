@@ -1,7 +1,9 @@
 defmodule ExJsonLogger.Ecto.LoggerTest do
   use ExUnit.Case
-  require Logger
+
   import TestUtils, only: [capture_log: 1]
+
+  require Logger
 
   @default_metadata [
     :decode_time,
@@ -35,7 +37,7 @@ defmodule ExJsonLogger.Ecto.LoggerTest do
         ]
       }
 
-      {_, message} =
+      message =
         capture_log(fn ->
           ExJsonLogger.Ecto.Logger.log(entry)
         end)
