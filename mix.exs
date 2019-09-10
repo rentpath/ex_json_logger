@@ -46,7 +46,7 @@ defmodule ExJsonLogger.Mixfile do
       {:credo, "~> 1.0", only: [:dev, :test]},
       {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false},
       {:plug, "~> 1.8"},
-      {:poison, ">= 4.0.0"}
+      {:jason, "~> 1.0"}
     ]
   end
 

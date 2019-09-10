@@ -49,7 +49,7 @@ defmodule ExJsonLogger do
 
   defp encode(log_event) do
     log_event
-    |> Poison.encode!()
+    |> Jason.encode!()
     |> Kernel.<>("\n")
   end
 
