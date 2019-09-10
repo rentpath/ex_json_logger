@@ -22,7 +22,7 @@ defmodule ExJsonLogger do
   """
   import Logger.Formatter, only: [format_date: 1, format_time: 1]
 
-  @filtered_keys ["password", "token", "authorization", "api_token"]
+  @filtered_keys ["password", "token", "authorization", "api_token", "_csrf_token"]
 
   @doc """
   Function referenced in the `:format` config.
