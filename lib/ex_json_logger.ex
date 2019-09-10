@@ -22,11 +22,13 @@ defmodule ExJsonLogger do
   """
   import Logger.Formatter, only: [format_date: 1, format_time: 1]
 
+  @filtered_keys ["password", "token", "authorization", "api_token"]
+
   @doc """
   Function referenced in the `:format` config.
   """
-  @spec format(Logger.level(), Logger.message(),
-               Logger.Formatter.time(), Keyword.t()) :: String.t()
+  @spec format(Logger.level(), Logger.message(), Logger.Formatter.time(), Keyword.t()) ::
+          String.t()
   def format(level, msg, timestamp, metadata) do
     logger_info = %{
       level: level,
@@ -37,6 +39,7 @@ defmodule ExJsonLogger do
     metadata
     |> Map.new(fn {k, v} -> {k, format_metadata(v)} end)
     |> Map.merge(logger_info)
+    |> recursive_drop()
     |> encode()
   rescue
     _ ->
@@ -48,9 +51,43 @@ defmodule ExJsonLogger do
   end
 
   defp encode(log_event) do
-    log_event
-    |> Jason.encode!()
+    case Jason.encode(log_event) do
+      {:ok, result} ->
+        result
+
+      _ ->
+        Jason.encode!(%{encode_error: inspect(log_event)})
+    end
     |> Kernel.<>("\n")
+  end
+
+  def filtered_keys() do
+    Application.get_env(:plug_logger_json, :filtered_keys) || @filtered_keys
+  end
+
+  def recursive_drop(data, keys \\ filtered_keys())
+  def recursive_drop(%{__struct__: mod} = struct, keys) when is_atom(mod) do
+    struct
+    |> Map.from_struct()
+    |> recursive_drop(keys)
+  end
+
+  def recursive_drop(data, keys) when is_map(data) do
+    ks = keys |> Enum.map(&to_string/1)
+
+    Enum.reduce(data, %{}, fn {k, v}, acc ->
+      v2 =
+        case v do
+          v when is_map(v) -> recursive_drop(v, keys)
+          v -> v
+        end
+
+      if !Enum.member?(ks, k |> to_string) do
+        Map.put(acc, k, v2)
+      else
+        acc
+      end
+    end)
   end
 
   defp format_timestamp({date, time}) do
@@ -59,5 +96,6 @@ defmodule ExJsonLogger do
 
   defp format_metadata(pid) when is_pid(pid), do: inspect(pid)
   defp format_metadata(ref) when is_reference(ref), do: inspect(ref)
+
   defp format_metadata(other), do: other
 end
