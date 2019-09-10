@@ -39,7 +39,7 @@ defmodule ExJsonLogger do
     metadata
     |> Map.new(fn {k, v} -> {k, format_metadata(v)} end)
     |> Map.merge(logger_info)
-    |> recursive_drop()
+    |> recursive_filter()
     |> encode()
   rescue
     _ ->
@@ -65,27 +65,32 @@ defmodule ExJsonLogger do
     Application.get_env(:plug_logger_json, :filtered_keys) || @filtered_keys
   end
 
-  def recursive_drop(data, keys \\ filtered_keys())
-  def recursive_drop(%{__struct__: mod} = struct, keys) when is_atom(mod) do
-    struct
-    |> Map.from_struct()
-    |> recursive_drop(keys)
+  def filtered_replacement() do
+    Application.get_env(:plug_logger_json, :filtered_replacement) || "[REDACTED]"
   end
 
-  def recursive_drop(data, keys) when is_map(data) do
+  def recursive_filter(data, keys \\ filtered_keys(), replacement \\ filtered_replacement())
+
+  def recursive_filter(%{__struct__: mod} = struct, keys, replacement) when is_atom(mod) do
+    struct
+    |> Map.from_struct()
+    |> recursive_filter(keys, replacement)
+  end
+
+  def recursive_filter(data, keys, replacement) when is_map(data) do
     ks = keys |> Enum.map(&to_string/1)
 
     Enum.reduce(data, %{}, fn {k, v}, acc ->
       v2 =
         case v do
-          v when is_map(v) -> recursive_drop(v, keys)
+          v when is_map(v) -> recursive_filter(v, keys, replacement)
           v -> v
         end
 
       if !Enum.member?(ks, k |> to_string) do
         Map.put(acc, k, v2)
       else
-        acc
+        Map.put(acc, k, replacement)
       end
     end)
   end

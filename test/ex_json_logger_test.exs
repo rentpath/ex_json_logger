@@ -20,17 +20,17 @@ defmodule ExJsonLoggerTest do
     test "removes top level key" do
       result =
         %{key1: 1, key2: 2}
-        |> ExJsonLogger.recursive_drop([:key1])
+        |> ExJsonLogger.recursive_filter([:key1])
 
-      assert result == %{key2: 2}
+      assert result == %{key2: 2, key1: "[REDACTED]"}
     end
 
     test "removes nested level key" do
       result =
         %{key1: 1, session: %{sekret: 42}}
-        |> ExJsonLogger.recursive_drop([:sekret])
+        |> ExJsonLogger.recursive_filter([:sekret])
 
-      assert result == %{key1: 1, session: %{}}
+      assert result == %{key1: 1, session: %{sekret: "[REDACTED]"}}
     end
   end
 
@@ -70,7 +70,7 @@ defmodule ExJsonLoggerTest do
         "msg" => "this is a message",
         "level" => "debug",
         "user_id" => 11,
-        "session" => %{"flag" => "yes"}
+        "session" => %{"flag" => "yes", "password" => "[REDACTED]"}
       }
 
       assert log_without_time == expected
