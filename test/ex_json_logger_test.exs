@@ -26,8 +26,7 @@ defmodule ExJsonLoggerTest do
           Logger.debug("this is a message")
         end)
 
-      {:ok, decoded_log} = Poison.decode(message)
-
+      {:ok, decoded_log} = Jason.decode(message)
       assert %{
         "msg" => "this is a message",
         "level" => "debug",
@@ -51,7 +50,7 @@ defmodule ExJsonLoggerTest do
         Logger.info("this is a message")
       end)
 
-    {:ok, decoded_log} = Poison.decode(message)
+    {:ok, decoded_log} = Jason.decode(message)
 
     assert %{
       "msg" => "this is a message",
