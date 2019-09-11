@@ -62,11 +62,11 @@ defmodule ExJsonLogger do
   end
 
   def filtered_keys() do
-    Application.get_env(:plug_logger_json, :filtered_keys) || @filtered_keys
+    Application.get_env(:ex_json_logger, :filtered_keys) || @filtered_keys
   end
 
   def filtered_replacement() do
-    Application.get_env(:plug_logger_json, :filtered_replacement) || "[REDACTED]"
+    Application.get_env(:ex_json_logger, :filtered_replacement) || "[REDACTED]"
   end
 
   def recursive_filter(data, keys \\ filtered_keys(), replacement \\ filtered_replacement())

@@ -31,6 +31,17 @@ config :logger, :console,
   ]
 ```
 
+Sensitive keys in the logger output will be recursively discovered and redacted. The keys redacted
+and the replacement string used can be configured as follows:
+
+```
+config :ex_json_logger,
+   filtered_replacement: "[XXXXXXX]",
+   filtered_keys: ["password", "secrets"]
+```
+
+Sensible defaults are in place for keys to redact.
+
 For additional configuration and metadata option refer to `moduledocs`
 
 ## Documentation
