@@ -75,6 +75,19 @@ defmodule ExJsonLoggerTest do
 
       assert log_without_time == expected
     end
+
+    test "drops matching log lines" do
+      Logger.configure_backend(:console, metadata: [:user_id, :controller])
+      Application.put_env(:ex_json_logger, :drop_lines_matching, "Healthcheck")
+      Logger.metadata(user_id: 11, controller: "Healthcheck")
+
+      message =
+        capture_log(fn ->
+          Logger.debug("this is a message")
+        end)
+
+      assert message == ""
+    end
   end
 
   test "pids and refs are encoded" do

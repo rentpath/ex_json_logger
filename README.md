@@ -37,10 +37,13 @@ and the replacement string used can be configured as follows:
 ```
 config :ex_json_logger,
    filtered_replacement: "[XXXXXXX]",
-   filtered_keys: ["password", "secrets"]
+   filtered_keys: ["password", "secrets"],
+   drop_lines_matching: nil || ~r(V1\.HealthCheckController) || "V1.HealthCheckController" || ["HealthCheck", "PrivateController"]
 ```
 
 Sensible defaults are in place for keys to redact.
+
+drop_lines_matching uses `String.contains?()` when not nil
 
 For additional configuration and metadata option refer to `moduledocs`
 

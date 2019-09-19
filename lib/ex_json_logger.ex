@@ -41,6 +41,7 @@ defmodule ExJsonLogger do
     |> Map.merge(logger_info)
     |> recursive_filter()
     |> encode()
+    |> drop_if_matching()
   rescue
     _ ->
       encode(%{
@@ -48,6 +49,22 @@ defmodule ExJsonLogger do
         time: format_timestamp(timestamp),
         msg: "Could not format: #{inspect({level, msg, metadata})}"
       })
+  end
+
+  defp exclusion_pattern() do
+    Application.get_env(:ex_json_logger, :drop_lines_matching, nil)
+  end
+
+  defp drop_if_matching(str, exclusion_pattern \\ exclusion_pattern())
+
+  defp drop_if_matching(str, nil), do: str
+
+  defp drop_if_matching(str, exclusion_pattern) do
+    if String.contains?(str, exclusion_pattern) do
+      ""
+    else
+      str
+    end
   end
 
   defp encode(log_event) do
