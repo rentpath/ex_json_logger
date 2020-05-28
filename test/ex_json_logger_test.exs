@@ -19,16 +19,20 @@ defmodule ExJsonLoggerTest do
   describe "resursive_drop/2" do
     test "removes top level key" do
       result =
-        %{key1: 1, key2: 2}
-        |> ExJsonLogger.recursive_filter([:key1])
+        ExJsonLogger.recursive_filter(
+          %{key1: 1, key2: 2},
+          [:key1]
+        )
 
       assert result == %{key2: 2, key1: "[REDACTED]"}
     end
 
     test "removes nested level key" do
       result =
-        %{key1: 1, session: %{sekret: 42}}
-        |> ExJsonLogger.recursive_filter([:sekret])
+        ExJsonLogger.recursive_filter(
+          %{key1: 1, session: %{sekret: 42}},
+          [:sekret]
+        )
 
       assert result == %{key1: 1, session: %{sekret: "[REDACTED]"}}
     end

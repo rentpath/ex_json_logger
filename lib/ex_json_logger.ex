@@ -51,7 +51,7 @@ defmodule ExJsonLogger do
       })
   end
 
-  defp exclusion_pattern() do
+  defp exclusion_pattern do
     Application.get_env(:ex_json_logger, :drop_lines_matching, nil)
   end
 
@@ -68,7 +68,9 @@ defmodule ExJsonLogger do
   end
 
   defp encode(log_event) do
-    case Jason.encode(log_event) do
+    log_event
+    |> Jason.encode()
+    |> case do
       {:ok, result} ->
         result
 
@@ -78,14 +80,15 @@ defmodule ExJsonLogger do
     |> Kernel.<>("\n")
   end
 
-  def filtered_keys() do
+  def filtered_keys do
     Application.get_env(:ex_json_logger, :filtered_keys) || @filtered_keys
   end
 
-  def filtered_replacement() do
+  def filtered_replacement do
     Application.get_env(:ex_json_logger, :filtered_replacement) || "[REDACTED]"
   end
 
+  @spec recursive_filter(any(), [atom()], String.t()) :: any()
   def recursive_filter(data, keys \\ filtered_keys(), replacement \\ filtered_replacement())
 
   def recursive_filter(%{__struct__: mod} = struct, keys, replacement) when is_atom(mod) do
@@ -95,21 +98,24 @@ defmodule ExJsonLogger do
   end
 
   def recursive_filter(data, keys, replacement) when is_map(data) do
-    ks = keys |> Enum.map(&to_string/1)
+    ks = Enum.map(keys, &to_string/1)
 
     Enum.reduce(data, %{}, fn {k, v}, acc ->
-      v2 =
-        case v do
-          v when is_map(v) -> recursive_filter(v, keys, replacement)
-          v -> v
-        end
+      v2 = maybe_recursive_filter(v, keys, replacement)
 
-      if !Enum.member?(ks, k |> to_string) do
-        Map.put(acc, k, v2)
-      else
+      if Enum.member?(ks, to_string(k)) do
         Map.put(acc, k, replacement)
+      else
+        Map.put(acc, k, v2)
       end
     end)
+  end
+
+  defp maybe_recursive_filter(v, keys, replacement) do
+    case v do
+      v when is_map(v) -> recursive_filter(v, keys, replacement)
+      v -> v
+    end
   end
 
   defp format_timestamp({date, time}) do
