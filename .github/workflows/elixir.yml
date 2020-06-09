@@ -1,0 +1,41 @@
+name: ex_json_logger Ci
+
+on:
+  pull_request:
+    
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        otp: ['20.3', '21.3', '22.3']
+        elixir: ['1.7.4', '1.8.2', '1.9.4', '1.10.3']
+
+    steps:
+    - name: Setup elixir
+      uses: actions/setup-elixir@v1
+      with:
+        elixir-version: ${{ matrix.elixir }}
+        otp-version: ${{ matrix.otp }}
+
+    - name: Retrieve Mix Dependencies Cache
+      uses: actions/cache@v1
+      id: mix-cache
+      with:
+        path: deps
+        key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+        
+    - name: Install Mix Dependencies
+      if: steps.mix-cache.outputs.cache-hit != 'true'
+      run: |
+        mix local.rebar --force
+        mix local.hex --force
+        mix deps.get
+
+    - name: Run Credo
+      run: mix credo --strict
+
+    - name: Run Tests
+      run: mix test
