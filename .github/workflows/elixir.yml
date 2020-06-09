@@ -1,8 +1,6 @@
-name: ex_json_logger Ci
+name: CI
 
-on:
-  pull_request:
-    
+on: [pull_request]
 
 jobs:
   test:
@@ -10,10 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        otp: ['20.3', '21.3', '22.3']
+        otp: ['21.3', '22.3']
         elixir: ['1.7.4', '1.8.2', '1.9.4', '1.10.3']
 
     steps:
+    - uses: actions/checkout@v2
+
     - name: Setup elixir
       uses: actions/setup-elixir@v1
       with:
