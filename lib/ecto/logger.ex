@@ -11,6 +11,13 @@ defmodule ExJsonLogger.Ecto.Logger do
 
   Metadata is filtered by default so keys will need to be whitelisted.
 
+  Sensitive keys in the logger output will be recursively discovered and redacted. The keys redacted
+  and the replacement string used can be configured as follows:
+
+  config :ex_json_logger,
+     filtered_replacement: "[XXXXXXX]",
+     filtered_keys: ["password", "secrets"]
+
   ## Usage
 
   Add `ExJsonLogger.Ecto.Logger` to the Repo's configuration under the `:loggers` key.
@@ -39,7 +46,7 @@ defmodule ExJsonLogger.Ecto.Logger do
 
     times =
       [query_time, decode_time, queue_time] =
-        Enum.map([raw_query_time, raw_decode_time, raw_queue_time], &to_ms/1)
+      Enum.map([raw_query_time, raw_decode_time, raw_queue_time], &to_ms/1)
 
     duration =
       times
