@@ -1,16 +1,21 @@
 defmodule ExJsonLogger.Mixfile do
   use Mix.Project
 
+  @source_url "https://github.com/rentpath/ex_json_logger"
+  @version "1.1.0"
+
   def project do
     [
       app: :ex_json_logger,
-      version: "1.1.0",
+      name: "ex_json_logger",
+      version: @version,
       elixir: ">= 1.6.0",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
       aliases: aliases(),
       deps: deps(),
+      docs: docs(),
       description: description(),
       test_coverage: [
         tool: ExCoveralls
@@ -21,26 +26,17 @@ defmodule ExJsonLogger.Mixfile do
       dialyzer: [
         plt_add_deps: :transitive,
         ignore_warnings: ".dialyzerignore"
-      ],
-
-      # Docs
-      name: "ex_json_logger",
-      source_url: "https://github.com/rentpath/ex_json_logger",
-      docs: docs()
+      ]
     ]
   end
 
-  # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
   def application do
-    # Specify extra applications you'll use from Erlang/Elixir
     [extra_applications: [:logger]]
   end
 
   defp deps do
     [
-      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:ecto, "~> 3.1", only: [:dev], optional: true},
       {:excoveralls, "~> 0.11", only: [:test]},
       {:credo, "~> 1.0", only: [:dev, :test]},
@@ -52,26 +48,32 @@ defmodule ExJsonLogger.Mixfile do
 
   defp description do
     """
-    JSON formatter for Loggers console backend, Plug and Ecto formatters included.
     """
   end
 
   defp package do
     [
       name: :ex_json_logger,
+      description: "JSON formatter for Loggers console backend, Plug, and Ecto formatters included.",
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["devadmin@rentpath.com", "Eric Toulson <ebtoulson@gmail.com>"],
-      links: %{"GitHub" => "https://github.com/rentpath/ex_json_logger"},
-      licenses: ["The MIT License"]
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => @source_url
+      }
     ]
   end
 
   defp docs do
     [
-      main: "readme",
       extras: [
-        "README.md"
-      ]
+        "LICENSE.md": [title: "License"],
+        "README.md": [title: "Overview"]
+      ],
+      main: "readme",
+      source_url: @source_url,
+      source_ref: "v#{@version}",
+      formatters: ["html"]
     ]
   end
 
