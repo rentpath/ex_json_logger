@@ -9,14 +9,13 @@ defmodule ExJsonLogger.Mixfile do
       app: :ex_json_logger,
       name: "ex_json_logger",
       version: @version,
-      elixir: ">= 1.6.0",
+      elixir: ">= 1.76.0",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
       aliases: aliases(),
       deps: deps(),
       docs: docs(),
-      description: description(),
       test_coverage: [
         tool: ExCoveralls
       ],
@@ -39,16 +38,11 @@ defmodule ExJsonLogger.Mixfile do
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:ecto, "~> 3.1", only: [:dev], optional: true},
       {:excoveralls, "~> 0.11", only: [:test]},
-      {:credo, "~> 1.0", only: [:dev, :test]},
+      {:credo, "~> 1.5", only: [:dev, :test]},
       {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false},
       {:plug, "~> 1.8"},
       {:jason, "~> 1.0"}
     ]
-  end
-
-  defp description do
-    """
-    """
   end
 
   defp package do
