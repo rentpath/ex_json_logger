@@ -9,7 +9,7 @@ defmodule ExJsonLogger.Mixfile do
       app: :ex_json_logger,
       name: "ex_json_logger",
       version: @version,
-      elixir: ">= 1.76.0",
+      elixir: ">= 1.7.0",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
