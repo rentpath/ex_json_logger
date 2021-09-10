@@ -5,7 +5,7 @@ defmodule ExJsonLogger.Mixfile do
     [
       app: :ex_json_logger,
       version: "1.1.0",
-      elixir: ">= 1.6.0",
+      elixir: ">= 1.7.0",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
@@ -43,7 +43,7 @@ defmodule ExJsonLogger.Mixfile do
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
       {:ecto, "~> 3.1", only: [:dev], optional: true},
       {:excoveralls, "~> 0.11", only: [:test]},
-      {:credo, "~> 1.0", only: [:dev, :test]},
+      {:credo, "~> 1.5", only: [:dev, :test]},
       {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false},
       {:plug, "~> 1.8"},
       {:jason, "~> 1.0"}
