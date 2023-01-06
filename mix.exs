@@ -2,14 +2,14 @@ defmodule ExJsonLogger.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/rentpath/ex_json_logger"
-  @version "1.1.0"
+  @version "1.2.0"
 
   def project do
     [
       app: :ex_json_logger,
       name: "ex_json_logger",
       version: @version,
-      elixir: ">= 1.7.0",
+      elixir: ">= 1.13.0",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
