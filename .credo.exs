@@ -71,6 +71,7 @@
         # set this value to 0 (zero).
         {Credo.Check.Design.TagTODO, exit_status: 2},
         {Credo.Check.Design.TagFIXME},
+
         {Credo.Check.Readability.AliasOrder},
         {Credo.Check.Readability.FunctionNames},
         {Credo.Check.Readability.LargeNumbers},
@@ -78,42 +79,30 @@
         {Credo.Check.Readability.ModuleAttributeNames},
         {Credo.Check.Readability.ModuleDoc},
         {Credo.Check.Readability.ModuleNames},
-        # Unfortunately there is a bug in the NestedFunctionCalls check I wrote
-        # so it must be disabled for now. Enable it next year after the fix has
-        # been merged.
-        {Credo.Check.Readability.NestedFunctionCalls, false},
         {Credo.Check.Readability.ParenthesesInCondition, false},
         {Credo.Check.Readability.ParenthesesOnZeroArityDefs},
         {Credo.Check.Readability.PredicateFunctionNames},
         {Credo.Check.Readability.PreferImplicitTry, exit_status: 0},
-        # Not compatible with Elixir 1.14
-        {Credo.Check.Readability.PreferUnquotedAtoms, false},
+        # {Credo.Check.Readability.PreferUnquotedAtoms}, # There is a bug in this Credo check in right now.
         {Credo.Check.Readability.RedundantBlankLines},
         {Credo.Check.Readability.Semicolons},
         {Credo.Check.Readability.SinglePipe},
         {Credo.Check.Readability.SpaceAfterCommas},
         {Credo.Check.Readability.Specs},
-        {Credo.Check.Readability.StrictModuleLayout,
-         order:
-           ~w/shortdoc moduledoc behaviour use import require alias module_attribute defstruct type typep callback macrocallback optional_callbacks/a},
         {Credo.Check.Readability.StringSigils, false},
         {Credo.Check.Readability.TrailingBlankLine},
         {Credo.Check.Readability.TrailingWhiteSpace},
         {Credo.Check.Readability.VariableNames},
-        {Credo.Check.Readability.WithSingleClause},
+
         {Credo.Check.Refactor.ABCSize},
         {Credo.Check.Refactor.AppendSingleItem, exit_status: 0},
         {Credo.Check.Refactor.CaseTrivialMatches, false},
         {Credo.Check.Refactor.CondStatements, false},
         {Credo.Check.Refactor.CyclomaticComplexity},
         {Credo.Check.Refactor.DoubleBooleanNegation},
-        {Credo.Check.Refactor.FilterFilter},
-        {Credo.Check.Refactor.FilterReject},
         {Credo.Check.Refactor.FunctionArity, max_arity: 6},
         {Credo.Check.Refactor.LongQuoteBlocks, false},
-        {Credo.Check.Refactor.MapInto, false},
-        {Credo.Check.Refactor.MapJoin},
-        {Credo.Check.Refactor.MapMap},
+        {Credo.Check.Refactor.MapInto},
         {Credo.Check.Refactor.MatchInCondition},
         {Credo.Check.Refactor.NegatedConditionsInUnless},
         {Credo.Check.Refactor.NegatedConditionsWithElse},
@@ -121,27 +110,18 @@
         {Credo.Check.Refactor.PerceivedComplexity, false},
         {Credo.Check.Refactor.PipeChainStart,
          excluded_argument_types: [:atom, :binary, :fn, :keyword], excluded_functions: []},
-        {Credo.Check.Refactor.RedundantWithClauseResult},
-        {Credo.Check.Refactor.RejectFilter},
-        {Credo.Check.Refactor.RejectReject},
         {Credo.Check.Refactor.VariableRebinding},
         {Credo.Check.Refactor.UnlessWithElse},
-        {Credo.Check.Refactor.WithClauses},
-        {Credo.Check.Warning.ApplicationConfigInModuleAttribute},
+
         {Credo.Check.Warning.BoolOperationOnSameValues},
         {Credo.Check.Warning.ExpensiveEmptyEnumCheck},
         {Credo.Check.Warning.IExPry},
         {Credo.Check.Warning.IoInspect},
         {Credo.Check.Warning.LazyLogging, false},
-        {Credo.Check.Warning.LeakyEnvironment},
         {Credo.Check.Warning.MapGetUnsafePass},
-        {Credo.Check.Warning.MixEnv},
         {Credo.Check.Warning.OperationOnSameValues},
         {Credo.Check.Warning.OperationWithConstantResult},
         {Credo.Check.Warning.RaiseInsideRescue},
-        {Credo.Check.Warning.SpecWithStruct},
-        {Credo.Check.Warning.UnsafeExec},
-        {Credo.Check.Warning.UnsafeToAtom},
         {Credo.Check.Warning.UnusedEnumOperation},
         {Credo.Check.Warning.UnusedFileOperation},
         {Credo.Check.Warning.UnusedKeywordOperation},
@@ -150,7 +130,6 @@
         {Credo.Check.Warning.UnusedRegexOperation},
         {Credo.Check.Warning.UnusedStringOperation},
         {Credo.Check.Warning.UnusedTupleOperation},
-        {Credo.Check.Warning.WrongTestFileExtension}
 
         # Custom checks can be created using `mix credo.gen.check`.
         #

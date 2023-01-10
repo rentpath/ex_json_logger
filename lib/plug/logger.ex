@@ -25,11 +25,9 @@ defmodule ExJsonLogger.Plug.Logger do
   Default is `:info`.
   """
 
-  @behaviour Plug
-
   require Logger
-
   alias Plug.Conn
+  @behaviour Plug
 
   @spec init(Keyword.t()) :: Logger.level()
   def init(opts) do
