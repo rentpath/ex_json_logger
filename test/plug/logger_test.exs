@@ -10,7 +10,8 @@ defmodule ExJsonLogger.Plug.LoggerTest do
     :method,
     :path,
     :status,
-    :duration
+    :duration,
+    :query_string
   ]
 
   @phoenix_metadata [
@@ -58,7 +59,7 @@ defmodule ExJsonLogger.Plug.LoggerTest do
       message =
         capture_log(fn ->
           :get
-          |> conn("/")
+          |> conn("/?one=value&and=another")
           |> put_phoenix_privates
           |> MyApp.call([])
         end)
@@ -67,6 +68,7 @@ defmodule ExJsonLogger.Plug.LoggerTest do
       assert message =~ "path=/"
       assert message =~ "status=200"
       assert message =~ ~r/duration=\d+.\d/u
+      assert message =~ "query_string=one=value&and=another"
       assert message =~ "format=json"
       assert message =~ "controller=#{inspect(__MODULE__)}"
       assert message =~ "action=show"
@@ -86,7 +88,7 @@ defmodule ExJsonLogger.Plug.LoggerTest do
       message =
         capture_log(fn ->
           :get
-          |> conn("/")
+          |> conn("/?one=value&and=another")
           |> MyApp.call([])
         end)
 
@@ -94,6 +96,7 @@ defmodule ExJsonLogger.Plug.LoggerTest do
       assert message =~ "path=/"
       assert message =~ "status=200"
       assert message =~ ~r/duration=\d+.\d/u
+      assert message =~ "query_string=one=value&and=another"
       refute message =~ "format="
       refute message =~ "controller="
       refute message =~ "action="
