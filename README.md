@@ -18,7 +18,7 @@ dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ex_json_logger, "~> 1.1.0"}
+    {:ex_json_logger, "~> 1.3.0"}
   ]
 end
 ```

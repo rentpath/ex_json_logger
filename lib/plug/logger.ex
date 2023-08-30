@@ -2,7 +2,7 @@ defmodule ExJsonLogger.Plug.Logger do
   @moduledoc """
   A plug for logging request information through metadata.
 
-  Logger Metadata avaliable:
+  Logger Metadata available:
    * method - request method
    * path - request path
    * status - request status (integer)
@@ -10,6 +10,7 @@ defmodule ExJsonLogger.Plug.Logger do
    * format - (phoenix specific)
    * controller - (phoenix specific)
    * action - (phoenix specific)
+   * query_string - raw unparsed request query string
 
   Metadata is filtered by default so keys will need to be whitelisted.
 
@@ -51,6 +52,7 @@ defmodule ExJsonLogger.Plug.Logger do
         |> Keyword.put(:path, conn.request_path)
         |> Keyword.put(:status, conn.status)
         |> Keyword.put(:duration, duration)
+        |> Keyword.put(:query_string, conn.query_string)
         |> Keyword.merge(formatted_phoenix_info(conn))
 
       Logger.log(level, fn -> {"", metadata} end)

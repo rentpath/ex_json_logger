@@ -2,7 +2,7 @@ defmodule ExJsonLogger.Mixfile do
   use Mix.Project
 
   @source_url "https://github.com/rentpath/ex_json_logger"
-  @version "1.2.0"
+  @version "1.3.0"
 
   def project do
     [
@@ -10,6 +10,7 @@ defmodule ExJsonLogger.Mixfile do
       name: "ex_json_logger",
       version: @version,
       elixir: ">= 1.13.0",
+      elixirc_options: [warnings_as_errors: true],
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
@@ -40,7 +41,7 @@ defmodule ExJsonLogger.Mixfile do
       {:excoveralls, "~> 0.11", only: [:test]},
       {:credo, "~> 1.6.7", only: [:dev, :test]},
       {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false},
-      {:plug, "~> 1.8"},
+      {:plug, "~> 1.14"},
       {:jason, "~> 1.0"}
     ]
   end
