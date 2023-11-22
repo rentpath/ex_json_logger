@@ -27,11 +27,12 @@ defmodule ExJsonLoggerTest do
         end)
 
       {:ok, decoded_log} = Jason.decode(message)
+
       assert %{
-        "msg" => "this is a message",
-        "level" => "debug",
-        "user_id" => 11
-      } = decoded_log
+               "msg" => "this is a message",
+               "level" => "debug",
+               "user_id" => 11
+             } = decoded_log
     end
   end
 
@@ -53,10 +54,10 @@ defmodule ExJsonLoggerTest do
     {:ok, decoded_log} = Jason.decode(message)
 
     assert %{
-      "msg" => "this is a message",
-      "level" => "info",
-      "pid" => ^expected_pid,
-      "ref" => ^expected_ref
-    } = decoded_log
+             "msg" => "this is a message",
+             "level" => "info",
+             "pid" => ^expected_pid,
+             "ref" => ^expected_ref
+           } = decoded_log
   end
 end
