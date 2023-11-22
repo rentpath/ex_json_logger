@@ -8,11 +8,11 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        otp: ['23', '24', '25']
-        elixir: ['1.13', '1.14']
+        otp: ['24', '25', '26']
+        elixir: ['1.14', '1.15']
         include:
-          - otp: '22'
-            elixir: '1.13'
+          - otp: '23'
+            elixir: '1.14'
 
     steps:
     - uses: actions/checkout@v2

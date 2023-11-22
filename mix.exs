@@ -42,7 +42,8 @@ defmodule ExJsonLogger.Mixfile do
       {:credo, "~> 1.6.7", only: [:dev, :test]},
       {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false},
       {:plug, "~> 1.14"},
-      {:jason, "~> 1.0"}
+      {:jason, "~> 1.0"},
+      {:benchee, "~> 1.2", only: :dev}
     ]
   end
 

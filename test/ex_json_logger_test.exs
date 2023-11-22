@@ -27,11 +27,12 @@ defmodule ExJsonLoggerTest do
         end)
 
       {:ok, decoded_log} = Jason.decode(message)
+
       assert %{
-        "msg" => "this is a message",
-        "level" => "debug",
-        "user_id" => 11
-      } = decoded_log
+               "msg" => "this is a message",
+               "level" => "debug",
+               "user_id" => 11
+             } = decoded_log
     end
   end
 
@@ -40,7 +41,8 @@ defmodule ExJsonLoggerTest do
     ref = make_ref()
     pid = self()
 
-    expected_ref = inspect(ref)
+    <<"#Reference", ref_code::binary>> = inspect(ref)
+    expected_ref = "#Ref" <> ref_code
     expected_pid = inspect(pid)
 
     Logger.metadata(pid: pid, ref: ref)
@@ -53,10 +55,10 @@ defmodule ExJsonLoggerTest do
     {:ok, decoded_log} = Jason.decode(message)
 
     assert %{
-      "msg" => "this is a message",
-      "level" => "info",
-      "pid" => ^expected_pid,
-      "ref" => ^expected_ref
-    } = decoded_log
+             "msg" => "this is a message",
+             "level" => "info",
+             "pid" => ^expected_pid,
+             "ref" => ^expected_ref
+           } = decoded_log
   end
 end
