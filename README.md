@@ -58,6 +58,15 @@ Tests include:
 - run tests: `script/test`
 - run tests with coverage: `script/test --coverage`
 
+## Running the benchmarks
+
+A basic benchee benchmarking script is available for testing performance
+improvements:
+
+```bash
+mix run bench/format.exs
+```
+
 ## Contributing
 
 -  If you modify code, add a corresponding test and documentation(if applicable).

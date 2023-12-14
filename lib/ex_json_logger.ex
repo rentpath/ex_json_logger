@@ -22,11 +22,12 @@ defmodule ExJsonLogger do
   """
   import Logger.Formatter, only: [format_date: 1, format_time: 1]
 
+  @pid_str "#PID"
+
   @doc """
   Function referenced in the `:format` config.
   """
-  @spec format(Logger.level(), Logger.message(),
-               Logger.Formatter.time(), Keyword.t()) :: String.t()
+  @spec format(Logger.level(), Logger.message(), Logger.Formatter.time(), Keyword.t()) :: iodata()
   def format(level, msg, timestamp, metadata) do
     logger_info = %{
       level: level,
@@ -43,21 +44,29 @@ defmodule ExJsonLogger do
       encode(%{
         level: :error,
         time: format_timestamp(timestamp),
-        msg: "Could not format: #{inspect({level, msg, metadata})}"
+        msg: "ExJsonLogger could not format: #{inspect({level, msg, metadata})}"
       })
   end
 
   defp encode(log_event) do
-    log_event
-    |> Jason.encode!()
-    |> Kernel.<>("\n")
+    [Jason.encode_to_iodata!(log_event), ?\n]
   end
 
   defp format_timestamp({date, time}) do
-    "#{format_date(date)} #{format_time(time)}"
+    unsafe_fragment([format_date(date), ?\s, format_time(time)])
   end
 
-  defp format_metadata(pid) when is_pid(pid), do: inspect(pid)
-  defp format_metadata(ref) when is_reference(ref), do: inspect(ref)
+  defp format_metadata(pid) when is_pid(pid) do
+    unsafe_fragment([@pid_str | :erlang.pid_to_list(pid)])
+  end
+
+  defp format_metadata(ref) when is_reference(ref) do
+    unsafe_fragment(:erlang.ref_to_list(ref))
+  end
+
   defp format_metadata(other), do: other
+
+  defp unsafe_fragment(data) do
+    Jason.Fragment.new([?", data, ?"])
+  end
 end
