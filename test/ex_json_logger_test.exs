@@ -61,4 +61,10 @@ defmodule ExJsonLoggerTest do
              "ref" => ^expected_ref
            } = decoded_log
   end
+
+  test "invalid byte" do
+    Logger.configure_backend(:console, metadata: [])
+    message = capture_log(fn -> Logger.debug(<<219, 229>>) end)
+    assert %{"level" => "error", "msg" => "��"} = Jason.decode!(message)
+  end
 end
