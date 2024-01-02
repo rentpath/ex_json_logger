@@ -1,5 +1,5 @@
 defmodule ExJsonLogger.Plug.LoggerTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case
   use Plug.Test
 
   import TestUtils, only: [capture_log: 1]
