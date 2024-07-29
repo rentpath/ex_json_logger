@@ -42,21 +42,21 @@ defmodule ExJsonLogger do
   """
   @spec format(Logger.level(), Logger.message(), Logger.Formatter.time(), Keyword.t()) :: iodata()
   def format(level, msg, timestamp, metadata) do
-    formatted_metadata = Map.new(metadata, fn {k, v} -> {k, format_metadata(v)} end)
+    formatted_metadata = Keyword.new(metadata, fn {k, v} -> {k, format_metadata(v)} end)
 
     [
-      {:level, level},
-      {:time, format_timestamp(timestamp)},
-      {:msg, IO.iodata_to_binary(msg)}
+      {"level", level},
+      {"time", format_timestamp(timestamp)},
+      {"msg", IO.iodata_to_binary(msg)}
       | formatted_metadata
     ]
     |> encode()
   rescue
     _ ->
       encode([
-        {:level, "error"},
-        {:time, format_timestamp(timestamp)},
-        {:msg, "ExJsonLogger could not format: #{inspect({level, msg, metadata})}"}
+        {"level", "error"},
+        {"time", format_timestamp(timestamp)},
+        {"msg", "ExJsonLogger could not format: #{inspect({level, msg, metadata})}"}
       ])
   end
 
