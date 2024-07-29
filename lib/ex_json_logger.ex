@@ -42,13 +42,11 @@ defmodule ExJsonLogger do
   """
   @spec format(Logger.level(), Logger.message(), Logger.Formatter.time(), Keyword.t()) :: iodata()
   def format(level, msg, timestamp, metadata) do
-    formatted_metadata = Keyword.new(metadata, fn {k, v} -> {k, format_metadata(v)} end)
-
     [
       {"level", level},
       {"time", format_timestamp(timestamp)},
       {"msg", IO.iodata_to_binary(msg)}
-      | formatted_metadata
+      | metadata(metadata)
     ]
     |> encode()
   rescue
@@ -62,6 +60,16 @@ defmodule ExJsonLogger do
 
   defp encode(fields) do
     [Jason.encode_to_iodata!(%LogEvent{fields: fields}), ?\n]
+  end
+
+  defp metadata([] = empty), do: empty
+
+  defp metadata([kv | rest]) do
+    if kv = format_metadata(kv) do
+      [kv | metadata(rest)]
+    else
+      metadata(rest)
+    end
   end
 
   defp format_timestamp({date, time}) do
