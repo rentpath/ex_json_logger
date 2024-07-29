@@ -64,9 +64,9 @@ defmodule ExJsonLogger do
 
   defp metadata([] = empty), do: empty
 
-  defp metadata([kv | rest]) do
-    if kv = format_metadata(kv) do
-      [kv | metadata(rest)]
+  defp metadata([{key, value} | rest]) do
+    if updated_value = format_metadata(value) do
+      [{key, updated_value} | metadata(rest)]
     else
       metadata(rest)
     end
