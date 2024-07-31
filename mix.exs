@@ -14,7 +14,6 @@ defmodule ExJsonLogger.Mixfile do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       package: package(),
-      aliases: aliases(),
       deps: deps(),
       docs: docs(),
       test_coverage: [
@@ -22,10 +21,6 @@ defmodule ExJsonLogger.Mixfile do
       ],
       preferred_cli_env: [
         coveralls: :test
-      ],
-      dialyzer: [
-        plt_add_deps: :transitive,
-        ignore_warnings: ".dialyzerignore"
       ]
     ]
   end
@@ -37,10 +32,10 @@ defmodule ExJsonLogger.Mixfile do
   defp deps do
     [
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:ecto, "~> 3.1", only: [:dev], optional: true},
+      {:ecto, "~> 3.11", only: [:dev], optional: true},
       {:excoveralls, "~> 0.11", only: [:test]},
-      {:credo, "~> 1.6.7", only: [:dev, :test]},
-      {:dialyxir, "~> 0.5.1", only: [:dev], runtime: false},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:plug, "~> 1.14"},
       {:jason, "~> 1.0"},
       {:benchee, "~> 1.2", only: :dev}
@@ -71,9 +66,5 @@ defmodule ExJsonLogger.Mixfile do
       source_ref: "v#{@version}",
       formatters: ["html"]
     ]
-  end
-
-  defp aliases do
-    [dialyzer: "dialyzer --halt-exit-status"]
   end
 end
