@@ -24,52 +24,32 @@ defmodule ExJsonLogger do
 
   @pid_str "#PID"
 
-  defmodule LogEvent do
-    @moduledoc false
-    defstruct fields: []
-    @type t :: %__MODULE__{fields: [{atom, term}]}
-
-    defimpl Jason.Encoder do
-      @spec encode(ExJsonLogger.LogEvent.t(), Jason.Encode.opts()) :: iodata
-      def encode(%{fields: fields}, opts) do
-        Jason.Encode.keyword(fields, opts)
-      end
-    end
-  end
-
   @doc """
   Function referenced in the `:format` config.
   """
   @spec format(Logger.level(), Logger.message(), Logger.Formatter.time(), Keyword.t()) :: iodata()
   def format(level, msg, timestamp, metadata) do
-    [
-      {"level", level},
-      {"time", format_timestamp(timestamp)},
-      {"msg", IO.iodata_to_binary(msg)}
-      | metadata(metadata)
-    ]
+    logger_info = %{
+      level: level,
+      time: format_timestamp(timestamp),
+      msg: IO.iodata_to_binary(msg)
+    }
+
+    metadata
+    |> Map.new(fn {k, v} -> {k, format_metadata(v)} end)
+    |> Map.merge(logger_info)
     |> encode()
   rescue
     _ ->
-      encode([
-        {"level", "error"},
-        {"time", format_timestamp(timestamp)},
-        {"msg", "ExJsonLogger could not format: #{inspect({level, msg, metadata})}"}
-      ])
+      encode(%{
+        level: :error,
+        time: format_timestamp(timestamp),
+        msg: "ExJsonLogger could not format: #{inspect({level, msg, metadata})}"
+      })
   end
 
-  defp encode(fields) do
-    [Jason.encode_to_iodata!(%LogEvent{fields: fields}), ?\n]
-  end
-
-  defp metadata([] = empty), do: empty
-
-  defp metadata([{key, value} | rest]) do
-    if updated_value = format_metadata(value) do
-      [{key, updated_value} | metadata(rest)]
-    else
-      metadata(rest)
-    end
+  defp encode(log_event) do
+    [Jason.encode_to_iodata!(log_event), ?\n]
   end
 
   defp format_timestamp({date, time}) do
