@@ -86,8 +86,6 @@
         {Credo.Check.Readability.ParenthesesOnZeroArityDefs},
         {Credo.Check.Readability.PredicateFunctionNames},
         {Credo.Check.Readability.PreferImplicitTry, exit_status: 0},
-        # Not compatible with Elixir 1.14
-        {Credo.Check.Readability.PreferUnquotedAtoms, false},
         {Credo.Check.Readability.RedundantBlankLines},
         {Credo.Check.Readability.Semicolons},
         {Credo.Check.Readability.SinglePipe},
