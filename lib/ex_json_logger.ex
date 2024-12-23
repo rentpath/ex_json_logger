@@ -27,7 +27,7 @@ defmodule ExJsonLogger do
   @doc """
   Function referenced in the `:format` config.
   """
-  @spec format(Logger.level(), Logger.message(), Logger.Formatter.time(), Keyword.t()) :: iodata()
+  @spec format(Logger.level(), Logger.message(), Logger.Formatter.date_time_ms(), Keyword.t()) :: iodata()
   def format(level, msg, timestamp, metadata) do
     logger_info = %{
       level: level,

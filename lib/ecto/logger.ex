@@ -27,7 +27,10 @@ defmodule ExJsonLogger.Ecto.Logger do
 
   require Logger
 
-  @spec log(Ecto.LogEntry.t(), Logger.level()) :: Ecto.LogEntry.t()
+  # Used to Ecto.LogEntry.t() but Ecto.LogEntry was removed.
+  @typep log_entry() :: struct()
+
+  @spec log(log_entry(), Logger.level()) :: log_entry()
   def log(entry, level \\ :debug) do
     %{
       query_time: raw_query_time,
